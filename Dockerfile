@@ -22,10 +22,9 @@ RUN pip install cpp-coveralls && \
         python3 --version
 
 COPY . /micropython
-
+RUN apt-get install -y git
 WORKDIR /micropython/unix
-#RUN cd unix && \
-#    make axtls && \
-#    make
-#ENTRYPOINT ./micropython
-ENTRYPOINT tail -f /dev/null
+RUN make axtls && \
+    make
+ENTRYPOINT ./micropython
+#ENTRYPOINT tail -f /dev/null
