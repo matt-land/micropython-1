@@ -1,28 +1,32 @@
 FROM ubuntu:trusty
-RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository -y ppa:terry.guo/gcc-arm-embedded && \
+RUN apt-get update && \
+    apt-get install -y \
+    software-properties-common && \
+    add-apt-repository -y ppa:terry.guo/gcc-arm-embedded && \
      dpkg --add-architecture i386 && \
-     apt-get update -qq || true && \
+     apt-get update -qq && \
      apt-get install -y \
-        python3 \
         gcc-multilib \
-        pkg-config \
+        gcc-mingw-w64 \
+        git \
         libffi-dev \
         libffi-dev:i386 \
-        qemu-system \
+        pkg-config \
+        python3 \
         python-pip \
+        qemu-system \
         # For teensy build
         realpath \
-        gcc-mingw-w64 && \
-     apt-get install -y --force-yes gcc-arm-none-eabi
-RUN pip install cpp-coveralls && \
+         && \
+     apt-get install -y --force-yes gcc-arm-none-eabi && \
+     pip install cpp-coveralls && \
      gcc --version && \
      arm-none-eabi-gcc --version && \
-        python3 --version
+     python3 --version && \
+     # remove apt cache
+     rm -rf /var/lib/apt/lists/*
 
 COPY . /micropython
-RUN apt-get install -y git
 WORKDIR /micropython/unix
 RUN make axtls && \
     make
