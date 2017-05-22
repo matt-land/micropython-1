@@ -24,7 +24,8 @@ RUN pip install cpp-coveralls && \
 COPY . /micropython
 
 WORKDIR /micropython/unix
-RUN cd unix && \
-    make axtls && \
-    make
-ENTRYPOINT ./micropython
+#RUN cd unix && \
+#    make axtls && \
+#    make
+#ENTRYPOINT ./micropython
+ENTRYPOINT tail -f /dev/null
